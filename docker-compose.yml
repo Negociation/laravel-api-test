@@ -1,0 +1,17 @@
+version: '3.1'
+
+services:
+  php_laravel:
+    build: .
+    container_name: backend
+    restart: unless-stopped
+    volumes:
+        - .:/var/www/html
+    ports:
+        - 8001:80
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: unless-stopped
+    ports:
+      - 6379:6379

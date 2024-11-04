@@ -1,0 +1,668 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api Produtos e Nutrição",
+        "description": "Exemplo Pratico",
+        "contact": {
+            "name": "Marcos França"
+        },
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Recupera todos os produtos",
+                "description": "Este endpoint recupera uma lista de todos os produtos disponíveis no sistema.",
+                "operationId": "b9d77a36a5f7bafc86dc6b2f2c60dd96",
+                "responses": {
+                    "200": {
+                        "description": "Lista de produtos recuperada com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "none"
+                                                },
+                                                "page": {
+                                                    "type": "integer",
+                                                    "example": "0"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "product_directory": {
+                                            "properties": {
+                                                "total_found": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Erro ao tentar recuperar produtos. Este erro pode ocorrer se houver problemas de conexão com o servidor de banco de dados ou serviço de cache.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "20221126"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 502
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Erro durante a execução, tente novamente mais tarde."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/products/{code}": {
+            "get": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Recupera um produto pela index code",
+                "description": "Este endpoint recupera os detalhes de um produto específico usando seu código (ID) fornecido na URL.",
+                "operationId": "6a06d02f9ae1528630c408efbf11fdf4",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "Código do produto que você deseja recuperar.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": "12345"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Produto recuperado com sucesso.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "20221126"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "product_directory": {
+                                            "properties": {
+                                                "total_found": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Produto não encontrado. O código fornecido não corresponde a nenhum produto existente.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "20221126"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Não foi possível encontrar um produto com a id especificada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Erro ao tentar recuperar o produto. Este erro pode ocorrer se houver problemas de conexão com o servidor de banco de dados ou serviço de cache.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "20221126"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 502
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Erro durante a execução, tente novamente mais tarde."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Produtos"
+                ],
+                "summary": "Atualiza um produto",
+                "operationId": "0e2ef98282d0223846b98f7576e49d82",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "O código do produto",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "code",
+                                    "url",
+                                    "creator",
+                                    "created_t",
+                                    "status",
+                                    "last_modified_t",
+                                    "product_name",
+                                    "quantity",
+                                    "brands",
+                                    "categories",
+                                    "labels",
+                                    "cities",
+                                    "purchase_places",
+                                    "stores",
+                                    "ingredients_text",
+                                    "traces",
+                                    "serving_size",
+                                    "serving_quantity",
+                                    "nutriscore_score",
+                                    "nutriscore_grade",
+                                    "main_category",
+                                    "image_url"
+                                ],
+                                "properties": {
+                                    "code": {
+                                        "description": "Código do produto",
+                                        "type": "string",
+                                        "example": "12345"
+                                    },
+                                    "url": {
+                                        "description": "URL do produto",
+                                        "type": "string",
+                                        "example": "https://example.com/produto/12345"
+                                    },
+                                    "creator": {
+                                        "description": "Criador do produto",
+                                        "type": "string",
+                                        "example": "admin"
+                                    },
+                                    "created_t": {
+                                        "description": "Data de criação",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-11-01 12:34:56"
+                                    },
+                                    "status": {
+                                        "description": "Status do produto",
+                                        "type": "string",
+                                        "enum": [
+                                            "draft",
+                                            "trash",
+                                            "published"
+                                        ],
+                                        "example": "published"
+                                    },
+                                    "last_modified_t": {
+                                        "description": "Data da última modificação",
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2024-11-01 12:34:56"
+                                    },
+                                    "product_name": {
+                                        "description": "Nome do produto",
+                                        "type": "string",
+                                        "example": "Produto Exemplo"
+                                    },
+                                    "quantity": {
+                                        "description": "Quantidade do produto",
+                                        "type": "string",
+                                        "example": "100g"
+                                    },
+                                    "brands": {
+                                        "description": "Marca do produto",
+                                        "type": "string",
+                                        "example": "Marca Exemplo"
+                                    },
+                                    "categories": {
+                                        "description": "Categorias do produto",
+                                        "type": "string",
+                                        "example": "Alimentos"
+                                    },
+                                    "labels": {
+                                        "description": "Rótulos do produto",
+                                        "type": "string",
+                                        "example": "Orgânico, Sem Glúten"
+                                    },
+                                    "cities": {
+                                        "description": "Cidades onde o produto é vendido",
+                                        "type": "string",
+                                        "example": "São Paulo, Rio de Janeiro"
+                                    },
+                                    "purchase_places": {
+                                        "description": "Locais de compra",
+                                        "type": "string",
+                                        "example": "Supermercado Exemplo"
+                                    },
+                                    "stores": {
+                                        "description": "Lojas que vendem o produto",
+                                        "type": "string",
+                                        "example": "Loja Exemplo"
+                                    },
+                                    "ingredients_text": {
+                                        "description": "Ingredientes do produto",
+                                        "type": "string",
+                                        "example": "Açúcar, Farinha de Trigo, Óleo Vegetal"
+                                    },
+                                    "traces": {
+                                        "description": "Traços de alérgenos",
+                                        "type": "string",
+                                        "example": "Amendoim, Soja"
+                                    },
+                                    "serving_size": {
+                                        "description": "Tamanho da porção",
+                                        "type": "string",
+                                        "example": "30g"
+                                    },
+                                    "serving_quantity": {
+                                        "description": "Quantidade por porção",
+                                        "type": "string",
+                                        "example": "30"
+                                    },
+                                    "nutriscore_score": {
+                                        "description": "Pontuação NutriScore",
+                                        "type": "integer",
+                                        "example": 12
+                                    },
+                                    "nutriscore_grade": {
+                                        "description": "Grau NutriScore",
+                                        "type": "string",
+                                        "example": "A"
+                                    },
+                                    "main_category": {
+                                        "description": "Categoria principal do produto",
+                                        "type": "string",
+                                        "example": "Bebidas"
+                                    },
+                                    "image_url": {
+                                        "description": "URL da imagem do produto",
+                                        "type": "string",
+                                        "example": "https://example.com/imagem.jpg"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "202": {
+                        "description": "Produto atualizado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "20221126"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "product_directory": {
+                                            "properties": {
+                                                "total_found": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Produto não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "20221126"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Não foi possível encontrar um produto com a id especificada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Erro ao tentar atualizar o produto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "20221126"
+                                                },
+                                                "product": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 502
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Erro durante a execução, tente novamente mais tarde."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Produtos"
+                ],
+                "operationId": "03a04b3c55c3f8f185c6a2aaf064c9e2",
+                "parameters": [
+                    {
+                        "name": "code",
+                        "in": "path",
+                        "description": "O código do produto",
+                        "required": true,
+                        "schema": {
+                            "type": "number"
+                        }
+                    }
+                ],
+                "responses": {
+                    "403": {
+                        "description": "Produto Deletado com sucesso",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "20221126"
+                                                },
+                                                "update_status": {
+                                                    "type": "string",
+                                                    "example": "trash"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "product_directory": {
+                                            "properties": {
+                                                "total_found": {
+                                                    "type": "integer",
+                                                    "example": 0
+                                                },
+                                                "products": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Produto não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "20221126"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 404
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Não foi possível encontrar um produto com a id especificada."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "502": {
+                        "description": "Erro ao tentar deletar o produto",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "query": {
+                                            "properties": {
+                                                "code": {
+                                                    "type": "string",
+                                                    "example": "20221126"
+                                                },
+                                                "product": {
+                                                    "type": "object"
+                                                }
+                                            },
+                                            "type": "object"
+                                        },
+                                        "status": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "statusCode": {
+                                            "type": "integer",
+                                            "example": 502
+                                        },
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Erro durante a execução, tente novamente mais tarde."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Produtos",
+            "description": "Produtos"
+        }
+    ]
+}
