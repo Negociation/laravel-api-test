@@ -8,14 +8,14 @@ use Illuminate\Http\Response;
 trait ApiResponses
 {
  // Response de Produto Encontrado
-    protected function productResponse($query, $productCollection, $statusCode = Response::HTTP_OK): JsonResponse
+    protected function productResponse($query, $productCollection,$totalFound, $statusCode = Response::HTTP_OK): JsonResponse
     {
         $result = [
             'query' => $query,
             'status' => true,
             'statusCode' => $statusCode,
             'product_directory' => [
-                'total_found' => count($productCollection),
+                'total_found' => $totalFound,
                 'products' => $productCollection
             ]
         ];

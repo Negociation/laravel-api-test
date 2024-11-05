@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 
 interface IProductService
 {
-    public function getAll() : JsonResponse;
+    public function getAll($page) : JsonResponse;
 
 
     public function getProduct(string $code) : JsonResponse;

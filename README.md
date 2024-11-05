@@ -30,6 +30,9 @@ As variaveis se encontram no env.example, bastando renomear para .env
 - Acessar a docker: docker exec -it backend bash 
 - Instalar dependencias: composer install 
 
+### Cuidado com os testes ###
+Se estiver rodando o comando de testes fora da Docker, o redis ira falhar devido a falta de conexão.
+
 ### Documentação da API ####
 Documentação base da API se encontra já gerada no formato json na pasta public (swagger.json)
 - Gerar uma nova documentação atualizada:  php artisan swagger:generate

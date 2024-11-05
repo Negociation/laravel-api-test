@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\ApiResponses;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductUpdatePutRequest;
+use App\Http\Requests\ValidatePageRequest;
 use App\Services\ProductService\IProductService;
+use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use OpenApi\Annotations as OA;
 
@@ -22,7 +24,6 @@ use OpenApi\Annotations as OA;
  *     securityScheme="Bearer",
  *     type="http",
  *     scheme="bearer",
- *     bearerFormat="JWT", // ou outro formato que você esteja utilizando
  *     description="Usar este token Bearer para autenticação."
  * )
  */
@@ -43,6 +44,17 @@ class ProductController extends Controller{
      *     summary="Recupera todos os produtos",
      *     description="Este endpoint recupera uma lista de todos os produtos disponíveis no sistema.",
      *     tags={"Produtos"},
+     *     @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         description="Número da página para paginação. Deve ser um inteiro positivo.",
+     *         required=false,
+     *         @OA\Schema(
+     *             type="integer",
+     *             minimum=1,
+     *             example=2
+     *         )
+     *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Lista de produtos recuperada com sucesso.",
@@ -77,8 +89,11 @@ class ProductController extends Controller{
      *     ),
      * )
      */
-    public function getAllProducts(){
-        return $this->productService->getAll();
+    public function getAllProducts(ValidatePageRequest $request){
+        //Valores de paginação
+        $page = $request->query('page', null);
+        
+        return $this->productService->getAll($page);
     }
 
     //Recuperar um Produto

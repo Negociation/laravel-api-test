@@ -26,15 +26,20 @@ class ProductService implements IProductService
         protected LogManager  $loggerService
     ){}
 
-    public function getAll() : JsonResponse{
+    public function getAll($page=null) : JsonResponse{
         try{
-            $productCollection = Product::all();
+            //Offset padrão
+            $offset = $page ?? 1;
+
+            //Pegar de 10 em 10 por página
+            $productCollection = Product::skip($offset-1)->take(10)->get();
 
             $query = [
                 "code"=>"none",
-                'page'=>0
+                'page'=>$offset
             ];
-            return $this->productResponse($query,$productCollection);
+
+            return $this->productResponse($query,$productCollection,Product::count());
         }catch(Exception $e){
             return $this->badGatewayProductResponse("none");
         }
@@ -58,7 +63,7 @@ class ProductService implements IProductService
                 //Salva na base de dados
                 $this->cachingService->set($code,$product);
             }
-            return $this->productResponse($query,[$product]);
+            return $this->productResponse($query,[$product],1);
         }catch(ModelNotFoundException $e){
             $this->loggerService->info($e->getMessage());
             return $this->notFoundProductResponse($code);
@@ -73,21 +78,17 @@ class ProductService implements IProductService
             $query = [
                 "code"=>$code
             ];
-            $product = Product::where('code', $code)->first();
 
-            if(!$product){
-                $product= $productData;
-            }
-            
             //Atualizar dados durante importação
-            $product['status'] = "published";
-            $product['imported_t'] = now();
-        
-            Product::updateOrCreate( ['code' => $code],$productData);
+            $productData['status'] = ProductStatus::PUBLISHED;
+            $productData['imported_t'] = now();
+            
+            Product::updateOrCreate(['code' => $code],$productData);
     
-            return $this->productResponse($query,[$product],HttpResponse::HTTP_ACCEPTED);
+            return $this->productResponse($query,[$productData],1,HttpResponse::HTTP_ACCEPTED);
         }catch(Exception $e){
-            $this->badGatewayProductResponse($code);
+            echo $e->getMessage();
+            return $this->badGatewayProductResponse($code);
         }
     }
 
@@ -107,7 +108,7 @@ class ProductService implements IProductService
             //Invalidação de Produto no Cache no Redis
             $this->cachingService->invalidate($code);
 
-            return $this->productResponse($query,[$product],HttpResponse::HTTP_GONE);
+            return $this->productResponse($query,[$product],1,HttpResponse::HTTP_GONE);
         }catch(ModelNotFoundException $e){
             $this->loggerService->info($e->getMessage());
             return $this->notFoundProductResponse($code);

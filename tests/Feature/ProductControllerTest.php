@@ -31,7 +31,7 @@ class ProductControllerTest extends TestCase
     {
 
         $payload=$this->fakeObj();
-        
+
         $this->withHeaders([
             'Authorization' => 'Bearer ' . env("API_KEY"),
         ])->json('put', "api/products/{$payload['code']}",$payload)
@@ -68,7 +68,6 @@ class ProductControllerTest extends TestCase
 
         return [
             "code" => (string) $faker->unique()->randomNumber(8),
-            "status" => "published",
             "url" => $faker->url,
             "creator" => $faker->userName,
             "created_t" => $faker->unixTime,

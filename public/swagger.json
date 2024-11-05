@@ -17,6 +17,19 @@
                 "summary": "Recupera todos os produtos",
                 "description": "Este endpoint recupera uma lista de todos os produtos disponíveis no sistema.",
                 "operationId": "b9d77a36a5f7bafc86dc6b2f2c60dd96",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "Número da página para paginação. Deve ser um inteiro positivo.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "example": 2
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "Lista de produtos recuperada com sucesso.",
@@ -303,16 +316,6 @@
                                         "format": "date-time",
                                         "example": "2024-11-01 12:34:56"
                                     },
-                                    "status": {
-                                        "description": "Status do produto",
-                                        "type": "string",
-                                        "enum": [
-                                            "draft",
-                                            "trash",
-                                            "published"
-                                        ],
-                                        "example": "published"
-                                    },
                                     "last_modified_t": {
                                         "description": "Data da última modificação",
                                         "type": "string",
@@ -323,81 +326,6 @@
                                         "description": "Nome do produto",
                                         "type": "string",
                                         "example": "Produto Exemplo"
-                                    },
-                                    "quantity": {
-                                        "description": "Quantidade do produto",
-                                        "type": "string",
-                                        "example": "100g"
-                                    },
-                                    "brands": {
-                                        "description": "Marca do produto",
-                                        "type": "string",
-                                        "example": "Marca Exemplo"
-                                    },
-                                    "categories": {
-                                        "description": "Categorias do produto",
-                                        "type": "string",
-                                        "example": "Alimentos"
-                                    },
-                                    "labels": {
-                                        "description": "Rótulos do produto",
-                                        "type": "string",
-                                        "example": "Orgânico, Sem Glúten"
-                                    },
-                                    "cities": {
-                                        "description": "Cidades onde o produto é vendido",
-                                        "type": "string",
-                                        "example": "São Paulo, Rio de Janeiro"
-                                    },
-                                    "purchase_places": {
-                                        "description": "Locais de compra",
-                                        "type": "string",
-                                        "example": "Supermercado Exemplo"
-                                    },
-                                    "stores": {
-                                        "description": "Lojas que vendem o produto",
-                                        "type": "string",
-                                        "example": "Loja Exemplo"
-                                    },
-                                    "ingredients_text": {
-                                        "description": "Ingredientes do produto",
-                                        "type": "string",
-                                        "example": "Açúcar, Farinha de Trigo, Óleo Vegetal"
-                                    },
-                                    "traces": {
-                                        "description": "Traços de alérgenos",
-                                        "type": "string",
-                                        "example": "Amendoim, Soja"
-                                    },
-                                    "serving_size": {
-                                        "description": "Tamanho da porção",
-                                        "type": "string",
-                                        "example": "30g"
-                                    },
-                                    "serving_quantity": {
-                                        "description": "Quantidade por porção",
-                                        "type": "string",
-                                        "example": "30"
-                                    },
-                                    "nutriscore_score": {
-                                        "description": "Pontuação NutriScore",
-                                        "type": "integer",
-                                        "example": 12
-                                    },
-                                    "nutriscore_grade": {
-                                        "description": "Grau NutriScore",
-                                        "type": "string",
-                                        "example": "A"
-                                    },
-                                    "main_category": {
-                                        "description": "Categoria principal do produto",
-                                        "type": "string",
-                                        "example": "Bebidas"
-                                    },
-                                    "image_url": {
-                                        "description": "URL da imagem do produto",
-                                        "type": "string",
-                                        "example": "https://example.com/imagem.jpg"
                                     }
                                 },
                                 "type": "object"
@@ -656,6 +584,15 @@
                         }
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "Bearer": {
+                "type": "http",
+                "description": "Usar este token Bearer para autenticação.",
+                "scheme": "bearer"
             }
         }
     },
