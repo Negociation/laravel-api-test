@@ -84,7 +84,10 @@ class ProductService implements IProductService
             $productData['imported_t'] = now();
             
             Product::updateOrCreate(['code' => $code],$productData);
-    
+
+            //Tentativa de Invalidação de Produto no Cache no Redis
+            $this->invalidateProductCache($code);
+            
             return $this->productResponse($query,[$productData],1,HttpResponse::HTTP_ACCEPTED);
         }catch(Exception $e){
             echo $e->getMessage();
@@ -105,8 +108,8 @@ class ProductService implements IProductService
             $product->status = ProductStatus::TRASH;
             $product->save();
 
-            //Invalidação de Produto no Cache no Redis
-            $this->cachingService->invalidate($code);
+            //Tentativa de Invalidação de Produto no Cache no Redis
+            $this->invalidateProductCache($code);
 
             return $this->productResponse($query,[$product],1,HttpResponse::HTTP_GONE);
         }catch(ModelNotFoundException $e){
@@ -124,5 +127,17 @@ class ProductService implements IProductService
         }catch(CachingConnectionException $e){
             return false;
         }
+    }
+
+    //Inavlidar Produto no Cache
+    private function invalidateProductCache($code){
+            //Invalidação de Produto no Cache no Redis
+            try{
+                $this->cachingService->invalidate($code);
+            }catch(CachingConnectionException $e){
+                //Mandar para uma fila talvez e tentar posteriormente a invalidação
+                //Criar uma blacklist para evitar busca no cache enquanto isso
+            }
+        
     }
 }
