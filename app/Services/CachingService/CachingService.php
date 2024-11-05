@@ -50,7 +50,7 @@ class CachingService implements ICachingService{
             return $this->redisClient->flushdb();
         }catch(Exception $e){
             $this->loggerService->error('Erro ao resetar o Redis: ' . $e->getMessage());
-            throw new CachingConnectionException($e->getMessage());
+         //   throw new CachingConnectionException($e->getMessage());
         }
     }
 }

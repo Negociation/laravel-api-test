@@ -41,7 +41,7 @@ class ProductService implements IProductService
     }
 
 
-    public function getProduct(int $code) : JsonResponse{
+    public function getProduct(string $code) : JsonResponse{
         try{
             //Query para response
             $query = [
@@ -67,22 +67,23 @@ class ProductService implements IProductService
         }
     }
 
-    public function updateProduct(array $productData, int $code) : JsonResponse{
+    public function updateProduct(array $productData, string $code) : JsonResponse{
         try{
             //Query para response
             $query = [
                 "code"=>$code
             ];
-            $product = Product::where('code', (int) $code)->first();
+            $product = Product::where('code', $code)->first();
 
             if(!$product){
                 $product= $productData;
             }
             
-            //Atualizar importação
+            //Atualizar dados durante importação
+            $product['status'] = "published";
             $product['imported_t'] = now();
         
-            Product::updateOrCreate($productData);
+            Product::updateOrCreate( ['code' => $code],$productData);
     
             return $this->productResponse($query,[$product],HttpResponse::HTTP_ACCEPTED);
         }catch(Exception $e){
@@ -90,7 +91,7 @@ class ProductService implements IProductService
         }
     }
 
-    public function deleteProduct(int $code) : JsonResponse{
+    public function deleteProduct(string $code) : JsonResponse{
         try{
             //Query
             $query = [
@@ -99,7 +100,7 @@ class ProductService implements IProductService
             ];
 
             //Atualização na Base de Dados
-            $product = Product::where("code",(int) $code)->firstOrFail();
+            $product = Product::where("code", $code)->firstOrFail();
             $product->status = ProductStatus::TRASH;
             $product->save();
 

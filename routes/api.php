@@ -17,7 +17,7 @@ Route::group(['prefix' => 'products', 'middleware' => ['api','api.auth']], funct
 
     //Rotas
     Route::get('/', [ProductController::class, 'getAllProducts']);
-    Route::put($urlSufix,[ProductController::class, 'updateProductData']);
+    Route::put($urlSufix,[ProductController::class, 'updateProductData'])->name('products.update');
     Route::delete($urlSufix,[ProductController::class, 'deleteProduct']);
     Route::get($urlSufix,[ProductController::class, 'getProductData']);
 })->middleware(ApiAuthMiddleware::class);

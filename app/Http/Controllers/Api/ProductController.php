@@ -12,13 +12,20 @@ use OpenApi\Annotations as OA;
 //Mover para Definitions depois
 
 /**
-* @OA\Info(
-    *     version="1.0.0",
-    *     title="Api Produtos e Nutrição",
-    *     description="Exemplo Pratico",
-    *     @OA\Contact(name="Marcos França")
-    * )
-*/
+ * @OA\Info(
+ *     version="1.0.0",
+ *     title="Api Produtos e Nutrição",
+ *     description="Exemplo Pratico",
+ *     @OA\Contact(name="Marcos França")
+ * )
+ * @OA\SecurityScheme(
+ *     securityScheme="Bearer",
+ *     type="http",
+ *     scheme="bearer",
+ *     bearerFormat="JWT", // ou outro formato que você esteja utilizando
+ *     description="Usar este token Bearer para autenticação."
+ * )
+ */
 class ProductController extends Controller{
 
     public function __construct(
@@ -165,24 +172,8 @@ class ProductController extends Controller{
     *               @OA\Property(property="url", type="string", example="https://example.com/produto/12345", description="URL do produto"),
     *               @OA\Property(property="creator", type="string", example="admin", description="Criador do produto"),
     *               @OA\Property(property="created_t", type="string", format="date-time", example="2024-11-01 12:34:56", description="Data de criação"),
-    *               @OA\Property(property="status", type="string", enum={"draft", "trash", "published"}, example="published", description="Status do produto"),
     *               @OA\Property(property="last_modified_t", type="string", format="date-time", example="2024-11-01 12:34:56", description="Data da última modificação"),
     *               @OA\Property(property="product_name", type="string", example="Produto Exemplo", description="Nome do produto"),
-    *               @OA\Property(property="quantity", type="string", example="100g", description="Quantidade do produto"), 
-    *               @OA\Property(property="brands", type="string", example="Marca Exemplo", description="Marca do produto"),
-    *               @OA\Property(property="categories", type="string", example="Alimentos", description="Categorias do produto"),
-    *               @OA\Property(property="labels", type="string", example="Orgânico, Sem Glúten", description="Rótulos do produto"),
-    *               @OA\Property(property="cities", type="string", example="São Paulo, Rio de Janeiro", description="Cidades onde o produto é vendido"),
-    *               @OA\Property(property="purchase_places", type="string", example="Supermercado Exemplo", description="Locais de compra"),
-    *               @OA\Property(property="stores", type="string", example="Loja Exemplo", description="Lojas que vendem o produto"),
-    *               @OA\Property(property="ingredients_text", type="string", example="Açúcar, Farinha de Trigo, Óleo Vegetal", description="Ingredientes do produto"),
-    *               @OA\Property(property="traces", type="string", example="Amendoim, Soja", description="Traços de alérgenos"),
-    *               @OA\Property(property="serving_size", type="string", example="30g", description="Tamanho da porção"),
-    *               @OA\Property(property="serving_quantity", type="string", example="30", description="Quantidade por porção"),
-    *               @OA\Property(property="nutriscore_score", type="integer", example=12, description="Pontuação NutriScore"),
-    *               @OA\Property(property="nutriscore_grade", type="string", example="A", description="Grau NutriScore"),
-    *               @OA\Property(property="main_category", type="string", example="Bebidas", description="Categoria principal do produto"),
-    *               @OA\Property(property="image_url", type="string", example="https://example.com/imagem.jpg", description="URL da imagem do produto")
     *         )
      *     ),
      *     @OA\Response(

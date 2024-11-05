@@ -28,28 +28,32 @@ class ProductUpdatePutRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required',
-            'url' => 'required',
-            'creator'  => 'string|required',
-            'created_t'  => 'required',
-            'status' => 'required|in:draft,trash,published',
-            'last_modified_t' => 'required',
-            'product_name'  => 'string|required',
-            'quantity' => 'string|required',
-            'brands' => 'string|required',
-            'categories' => 'string|required',
-            'labels' => 'string|required',
-            'cities' => 'string|nullable',
-            'purchase_places' => 'string|required',
-            'stores' => 'string|required',
-            'ingredients_text' => 'required',
-            'traces' => 'string|required',
-            'serving_size' => 'string|required',
-            'serving_quantity' => 'required',
-            'nutriscore_score' => 'required',
-            'nutriscore_grade' => 'string|required',
-            'main_category' => 'string|required',
-            'image_url' => 'string|required',
+            'code' => 'required|string',
+            'url' => 'required|url',
+            'creator' => 'required|string',
+            'created_t' => 'required|integer',
+            'last_modified_t' => 'required|integer',
+            'product_name' => 'nullable|string',
+            'abbreviated_product_name' => 'nullable|string',
+            'generic_name' => 'nullable|string',
+            'quantity' => 'nullable|string',
+            'packaging' => 'nullable|string',
+            'brands' => 'nullable|string',
+            'categories' => 'nullable|string',
+            'labels' => 'nullable|string',
+            'cities' => 'nullable|string',
+            'purchase_places' => 'nullable|string',
+            'stores' => 'nullable|string',
+            'countries' => 'nullable|string',
+            'ingredients_text' => 'nullable|string',
+            'allergens' => 'nullable|string',
+            'traces' => 'nullable|string',
+            'serving_size' => 'nullable|string',
+            'serving_quantity' => 'nullable|integer',
+            'nutriscore_score' => 'nullable|integer',
+            'nutriscore_grade' => 'nullable|string|in:a,b,c,d,e,f',
+            'main_category' => 'nullable|string',
+            'image_url' => 'nullable|url',
         ];
     }
 
@@ -66,5 +70,4 @@ class ProductUpdatePutRequest extends FormRequest
         );
     }
     
-
 }
